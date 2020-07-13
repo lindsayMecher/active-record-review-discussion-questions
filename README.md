@@ -1,4 +1,4 @@
-# ActiveRecord Review Discussion
+# Discussion Questions: ActiveRecord Review
 
 ## ActiveRecord
 
