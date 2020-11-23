@@ -50,7 +50,7 @@ voter.candidates
 
 vote = Vote.create(voter_id: voter.id, candidate_id: candidate.id)
 
-vote = voter.votes.create(candidate: candidate)
+vote = voter.votes.create(candidate: candidate) # alternative approach to above
 
 vote.voter
 
