@@ -18,11 +18,11 @@ Before we learned about ActiveRecord, we were able to call on a class method suc
 
 When our class inherits from `ActiveRecord::Base`, we get the `all` method (and many more methods) for free.
 
-Discuss with your table the steps involved in ActiveRecord's implementation of the class method `all`.  Read the SQL logger output. How is SQL used? What's the return value of this method?
+Discuss with your table the steps involved in ActiveRecord's implementation of the class method `all`. Read the SQL logger output. How is SQL used? What's the return value of this method?
 
 ## Domain Modeling
 
-With your table discuss how you would model out the relationships between three models: `Voter`, `Vote`, and `Candidate`.  On which table do the foreign keys belong?
+With your table discuss how you would model out the relationships between three models: `Voter`, `Vote`, and `Candidate`. On which table do the foreign keys belong?
 
 ## AR Query Methods
 
@@ -54,5 +54,52 @@ vote = voter.votes.create(candidate: candidate) # alternative approach to above
 
 vote.voter
 
+
+```
+
+Here is what I got when I ran the commands using a different model domain with a many-to-many relationship
+
+```ruby
+
+# Guest -< Reservation >- Room
+# Guest
+# has_many :reservations
+# has_many :rooms, through: :reservations
+
+# Reservation
+# belongs_to :room
+# belongs_to :guest
+
+# Room
+# has_many :reservations
+# has_many :guests, through: :reservations
+
+guest = Guest.create
+
+# INSERT INTO "guests" ("name", "phone_num", "email", "member", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?)  [["name", "gus"], ["phone_num", "17732031663"], ["email", "gues@me.com"], ["member", 1], ["created_at", "2021-02-22 16:31:56.452951"], ["updated_at", "2021-02-22 16:31:56.452951"]]
+
+room = Room.create
+
+# INSERT INTO "rooms" ("motel_id", "created_at", "updated_at") VALUES (?, ?, ?)  [["motel_id", 1], ["created_at", "2021-02-22 16:41:39.299276"], ["updated_at", "2021-02-22 16:41:39.299276"]]
+
+guest.reservations
+
+# SELECT "reservations".* FROM "reservations" WHERE "reservations"."guest_id" = ? LIMIT ?  [["guest_id", 101], ["LIMIT", 11]]
+
+guest.rooms
+
+# SELECT "rooms".* FROM "rooms" INNER JOIN "reservations" ON "rooms"."id" = "reservations"."room_id" WHERE "reservations"."guest_id" = ? LIMIT ?  [["guest_id", 101], ["LIMIT", 11]]
+
+reservation = Reservation.create(guest_id: guest.id, room_id: room.id)
+
+# INSERT INTO "reservations" ("guest_id", "room_id", "created_at", "updated_at") VALUES (?, ?, ?, ?)  [["guest_id", 101], ["room_id", 701], ["created_at", "2021-02-22 16:42:25.748106"], ["updated_at", "2021-02-22 16:42:25.748106"]]
+
+reservation_two = guest.reservations.create(room: room) # alternative approach to above
+
+# INSERT INTO "reservations" ("guest_id", "room_id", "created_at", "updated_at") VALUES (?, ?, ?, ?)  [["guest_id", 101], ["room_id", 701], ["created_at", "2021-02-22 16:42:46.766964"], ["updated_at", "2021-02-22 16:42:46.766964"]]
+
+reservation_two.guest
+
+# No SQL command
 
 ```
