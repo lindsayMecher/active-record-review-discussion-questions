@@ -76,11 +76,11 @@ Here is what I got when I ran the commands using a different model domain with a
 
 guest = Guest.create
 
-# INSERT INTO "guests" ("name", "phone_num", "email", "member", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?)  [["name", "gus"], ["phone_num", "17732031663"], ["email", "gues@me.com"], ["member", 1], ["created_at", "2021-02-22 16:31:56.452951"], ["updated_at", "2021-02-22 16:31:56.452951"]]
+# INSERT INTO "guests" ("created_at", "updated_at") VALUES (?, ?)  [["created_at", "2021-02-22 17:06:42.150934"], ["updated_at", "2021-02-22 17:06:42.150934"]]
 
 room = Room.create
 
-# INSERT INTO "rooms" ("motel_id", "created_at", "updated_at") VALUES (?, ?, ?)  [["motel_id", 1], ["created_at", "2021-02-22 16:41:39.299276"], ["updated_at", "2021-02-22 16:41:39.299276"]]
+# INSERT INTO "rooms" ("created_at", "updated_at") VALUES (?, ?)  [["created_at", "2021-02-22 16:41:39.299276"], ["updated_at", "2021-02-22 16:41:39.299276"]]
 
 guest.reservations
 
